@@ -49,7 +49,8 @@ Then, at the end of the module, annotate the doc with what the design got wrong.
 
 ### Module 0 — Foundations (1 evening)
 - Read `lib/presence_lab/application.ex`. Understand the supervision tree before touching anything.
-- Watch Sasa Juric's *The Soul of Erlang and Elixir*.
+- Read the [`Supervisor` module docs](https://hexdocs.pm/elixir/Supervisor.html) — especially the sections on child specifications and restart values.
+- Watch Sasa Juric's *The Soul of Erlang and Elixir* (the *why* of supervision; the restart-option details come from the docs above).
 - Outcome: explain `:permanent` vs `:transient` vs `:temporary` restarts without looking it up.
 
 ### Module 1 — Single-node Phoenix (weekend)
