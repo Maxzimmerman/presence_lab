@@ -7,10 +7,12 @@ defmodule PresenceLab.Application do
 
   @impl true
   def start(_type, _args) do
+    topologies = Application.get_env(:libcluster, :topologies) || []
+
     children = [
       PresenceLabWeb.Telemetry,
       PresenceLab.Repo,
-      {DNSCluster, query: Application.get_env(:presence_lab, :dns_cluster_query) || :ignore},
+      {Cluster.Supervisor, [topologies, [name: PresenceLab.ClusterSupervisor]]},
       {Phoenix.PubSub, name: PresenceLab.PubSub},
       # Start a worker by calling: PresenceLab.Worker.start_link(arg)
       # {PresenceLab.Worker, arg},

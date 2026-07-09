@@ -77,7 +77,8 @@ Then, at the end of the module, annotate the doc with what the design got wrong.
 ### Module 4 — k3d + libcluster (weekend)
 - Local k3d cluster (`k3d cluster create lab --agents 2`).
 - StatefulSet (not Deployment — stable hostnames matter for `node@host`).
-- `libcluster` with the `Kubernetes.DNS` strategy + headless service.
+- `libcluster` with the `Cluster.Strategy.Kubernetes` strategy (queries the K8s API for pods by label selector — same setup as mosaic; already wired in `config/runtime.exs`, needs `RELEASE_NAME`, `K8S_NODE_SELECTOR`, `K8S_NAMESPACE` env vars plus RBAC to list pods).
+- Compare with the `Kubernetes.DNS` strategy + headless service: what does the API strategy buy you, and what extra permissions does it cost?
 - Readiness/liveness probes that mean something (don't just hit `/`).
 - **Break it:** rolling deploy while holding open WebSockets. What does the user see? What did you lose?
 - Outcome: nodes form a cluster automatically on pod boot; you can do a rolling deploy without dropping all sockets.

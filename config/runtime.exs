@@ -55,7 +55,23 @@ if config_env() == :prod do
 
   host = System.get_env("PHX_HOST") || "example.com"
 
-  config :presence_lab, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+  # Same clustering setup as mosaic: libcluster polls the Kubernetes API for
+  # pods matching the selector and connects to them by IP. Requires RBAC
+  # permission to list pods (see Module 4 of CURRICULUM.md).
+  config :libcluster,
+    topologies: [
+      presence_lab_k8s: [
+        strategy: Cluster.Strategy.Kubernetes,
+        config: [
+          mode: :ip,
+          kubernetes_ip_lookup_mode: :pods,
+          kubernetes_node_basename: System.get_env("RELEASE_NAME"),
+          kubernetes_selector: System.get_env("K8S_NODE_SELECTOR"),
+          kubernetes_namespace: System.get_env("K8S_NAMESPACE"),
+          polling_interval: 10_000
+        ]
+      ]
+    ]
 
   config :presence_lab, PresenceLabWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
