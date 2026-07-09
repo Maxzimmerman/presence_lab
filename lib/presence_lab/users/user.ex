@@ -17,5 +17,6 @@ defmodule Users.User do
     user
     |> cast(opts, @required)
     |> validate_required(@required)
+    |> unique_constraint(:username)
   end
 end
