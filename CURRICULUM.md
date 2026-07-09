@@ -54,10 +54,28 @@ Then, at the end of the module, annotate the doc with what the design got wrong.
 - Outcome: explain `:permanent` vs `:transient` vs `:temporary` restarts without looking it up.
 
 ### Module 1 — Single-node Phoenix (weekend)
-- Auth (basic, cookie sessions).
-- Rooms CRUD + room channel.
-- LiveView presence list per room.
-- Outcome: it works. Tests cover the channel join path.
+
+**Auth — hand-rolled, not `phx.gen.auth`** (the generator is production-grade auth, which is an anti-goal; the point here is to touch `Plug.Conn` and the session yourself, because channel/socket auth later builds on it):
+- `users` table: `username` (unique index) + `password_hash`. Nothing else — no email, no confirmation, no reset.
+- A `Users` context with `create_user/1` (hash with `Bcrypt.hash_pwd_salt/1`) and `verify_user/2` (use `Bcrypt.verify_pass/2`; call `Bcrypt.no_user_verify/0` when the username doesn't exist, so misses take the same time as hits).
+- A session controller: register, log in (`put_session(conn, :user_id, id)` + `configure_session(renew: true)` — know why the renew matters), log out (`configure_session(drop: true)`).
+- A `:require_authenticated_user` plug in the router pipeline that loads `current_user` from the session or redirects to login.
+
+**Rooms:**
+- `rooms` table (`name`, unique) + `room_memberships` join table. Context functions: create/list/delete rooms, join/leave a room.
+- Controller or LiveView CRUD — whichever is less ceremony; the UI is not the lesson.
+- A `RoomChannel` (`room:<id>`): authorize on `join/3` (user must be a member — return `{:error, ...}` otherwise), broadcast chat messages, keep the last 50 messages per room (in-memory is fine for now; Module 6 revisits durability).
+- Authenticate the socket with `Phoenix.Token`: sign the user id into the token in the layout, verify it in `UserSocket.connect/3` with a `max_age`. Note how this parallels — but is not — the cookie session.
+
+**Presence:**
+- `Phoenix.Presence` tracking each user in their room's topic; metadata: at least `online_at` and `node()` (the node will get interesting from Module 2).
+- A LiveView per room rendering the member list, updated live from `presence_diff` events. Handle the same user with two tabs open (that's why presence metas are a list).
+
+**Tests:** the channel join path — an authorized member joins, a non-member is rejected, an unauthenticated socket never connects. Use `Phoenix.ChannelTest`.
+
+**Break it:** kill a LiveView process from observer while two browsers are in the room. Predict what each browser shows before you do it. Then explain why the presence entry disappeared without any cleanup code.
+
+- Outcome: two browser windows, two users, one room — both see each other appear and disappear in real time, and you can trace the full path of one chat message from keypress to the other browser (socket → channel → PubSub → channel → DOM).
 
 ### Module 2 — Two nodes on your laptop, no Docker (weekend)
 - Start two `iex --sname a` / `iex --sname b` nodes, manually `Node.connect/1`.
