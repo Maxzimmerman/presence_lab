@@ -65,7 +65,8 @@ defmodule PresenceLab.MixProject do
       {:gettext, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:libcluster, "~> 3.3"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:bcrypt_elixir, "~> 3.0"}
     ]
   end
 
