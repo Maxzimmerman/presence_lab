@@ -3,7 +3,8 @@ defmodule PresenceLabWeb.AuthLive do
 
   alias Users.User
 
-  def mount(_params, session, socket) do
+  def mount(_params, _session, socket) do
+    IO.puts(socket.assigns["user_id"])
     {:ok, assign(socket, form: to_form(User.changeset(%User{}, %{})))}
   end
 

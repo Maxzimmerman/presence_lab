@@ -8,6 +8,7 @@ defmodule PresenceLabWeb.Router do
     plug :put_root_layout, html: {PresenceLabWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug PresenceLabWeb.Plugs.RequireAuth
   end
 
   pipeline :api do
