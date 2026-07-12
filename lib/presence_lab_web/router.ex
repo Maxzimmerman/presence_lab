@@ -24,6 +24,7 @@ defmodule PresenceLabWeb.Router do
     pipe_through(:browser)
 
     get("/register", AuthController, :register)
+    post("/create-user", AuthController, :create_user)
   end
 
   # Other scopes may use custom stacks.

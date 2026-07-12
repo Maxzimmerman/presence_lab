@@ -1,5 +1,5 @@
 HELLO
-<.form :let={f} for={@changeset} action={~p"/auth/register"} method="post">
+<.form :let={f} for={@changeset} action={~p"/auth/create-user"} method="post">
   <.input type="text" field={f[:username]} />
   <.input type="password" field={f[:password]} />
   <button>Register</button>
