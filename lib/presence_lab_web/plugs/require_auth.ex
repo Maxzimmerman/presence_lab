@@ -6,6 +6,8 @@ defmodule PresenceLabWeb.Plugs.RequireAuth do
   end
 
   def call(conn, _params) do
+    IO.inspect(conn, libmit: :infinity)
+
     if conn.assigns["user_id"] do
       conn
     else

@@ -1,0 +1,7 @@
+HELLO
+<.form :let={f} for={@changeset} action={~p"/auth/register"} method="post">
+  <.input type="text" field={f[:username]} />
+  <.input type="password" field={f[:password]} />
+  <button>Register</button>
+</.form>
+

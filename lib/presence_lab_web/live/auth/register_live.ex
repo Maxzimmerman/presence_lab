@@ -4,7 +4,6 @@ defmodule PresenceLabWeb.AuthLive do
   alias Users.User
 
   def mount(_params, _session, socket) do
-    IO.puts(socket.assigns["user_id"])
     {:ok, assign(socket, form: to_form(User.changeset(%User{}, %{})))}
   end
 
@@ -14,15 +13,14 @@ defmodule PresenceLabWeb.AuthLive do
       |> User.changeset(user_params)
       |> to_form(action: :validate)
 
-    IO.inspect(socket.assigns.user_id, limit: :infinity)
     {:noreply, assign(socket, form: form)}
   end
 
   def handle_event("register", %{"user" => %{"username" => name, "password" => password}}, socket) do
     case Users.create_user(%{username: name, password: password}) do
-      {:ok, %User{id: id}} ->
+      {:ok, _user} ->
         {:noreply,
-         assign(socket, user_id: id)
+         socket
          |> put_flash(:info, "user created")
          |> redirect(to: ~p"/")}
 
