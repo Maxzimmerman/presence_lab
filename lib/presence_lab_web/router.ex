@@ -8,6 +8,7 @@ defmodule PresenceLabWeb.Router do
     plug :put_root_layout, html: {PresenceLabWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug PresenceLabWeb.Plugs.SetUserPlug
   end
 
   pipeline :api do
@@ -25,6 +26,7 @@ defmodule PresenceLabWeb.Router do
 
     get("/register", AuthController, :register)
     post("/create-user", AuthController, :create_user)
+    get("/logout", AuthController, :logout)
   end
 
   # Other scopes may use custom stacks.

@@ -25,4 +25,11 @@ defmodule PresenceLabWeb.AuthController do
         |> redirect(to: ~p"/")
     end
   end
+
+  def logout(conn, _params) do
+    conn
+    |> configure_session(drop: true)
+    |> put_flash(:info, "Logged out")
+    |> redirect(to: ~p"/")
+  end
 end

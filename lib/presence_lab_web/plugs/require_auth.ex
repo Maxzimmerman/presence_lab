@@ -6,10 +6,12 @@ defmodule PresenceLabWeb.Plugs.RequireAuth do
   end
 
   def call(conn, _params) do
-    IO.inspect(conn, libmit: :infinity)
+    IO.puts("called")
+    IO.inspect(conn.assigns.user)
 
-    if conn.assigns["user_id"] do
+    if user = conn.assigns.user do
       conn
+      |> put_flash(:info, "Logged in as #{user.username}")
     else
       conn
       |> put_flash(:error, "You must log in first")
