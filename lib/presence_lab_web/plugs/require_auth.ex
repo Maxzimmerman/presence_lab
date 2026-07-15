@@ -11,11 +11,10 @@ defmodule PresenceLabWeb.Plugs.RequireAuth do
 
     if user = conn.assigns.user do
       conn
-      |> put_flash(:info, "Logged in as #{user.username}")
     else
       conn
       |> put_flash(:error, "You must log in first")
-      |> redirect(to: ~p"/auth/register")
+      |> redirect(to: ~p"/auth/login")
       |> halt()
     end
   end

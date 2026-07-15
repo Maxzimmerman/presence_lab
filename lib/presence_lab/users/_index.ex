@@ -19,9 +19,9 @@ defmodule Users do
   end
 
   def check_password(username, password) do
-    with %User{password_hash: hash} <- get_user(username),
+    with %User{password_hash: hash} = user <- get_user(username),
          {:success, :valid_hash} <- check_hash(password, hash) do
-      {:ok, :valid}
+      {:valid, user}
     end
   end
 

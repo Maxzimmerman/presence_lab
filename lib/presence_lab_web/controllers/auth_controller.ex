@@ -9,6 +9,28 @@ defmodule PresenceLabWeb.AuthController do
     render(conn, :register, changeset: changeset)
   end
 
+  def login(conn, _params) do
+    changeset = User.changeset(%User{}, %{})
+
+    render(conn, :login, changeset: changeset)
+  end
+
+  def login_user(conn, %{"user" => user}) do
+    case Users.check_password(user["username"], user["password"]) do
+      {:valid, user} ->
+        conn
+        |> put_session(:user_id, user.id)
+        |> configure_session(renew: true)
+        |> put_flash(:info, "Welcome back #{user.username}")
+        |> redirect(to: ~p"/")
+
+      nil ->
+        conn
+        |> put_flash(:error, "Could not login")
+        |> redirect(to: "/")
+    end
+  end
+
   def create_user(conn, %{"user" => user}) do
     IO.inspect(user)
 

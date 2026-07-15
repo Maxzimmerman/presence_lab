@@ -27,6 +27,8 @@ defmodule PresenceLabWeb.Router do
     get("/register", AuthController, :register)
     post("/create-user", AuthController, :create_user)
     get("/logout", AuthController, :logout)
+    get("/login", AuthController, :login)
+    post("/login-user", AuthController, :login_user)
   end
 
   # Other scopes may use custom stacks.
