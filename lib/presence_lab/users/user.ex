@@ -3,11 +3,7 @@ defmodule Users.User do
 
   import Ecto.Changeset
 
-  alias PresenceLab.Rooms.Room
-
   schema "users" do
-    many_to_many :rooms, Room, join_through: "room_memberships"
-
     field :username, :string
     field :password_hash, :string
   end
@@ -22,6 +18,5 @@ defmodule Users.User do
     |> cast(opts, @required)
     |> validate_required(@required)
     |> unique_constraint(:username)
-    |> cast_assoc(:rooms)
   end
 end

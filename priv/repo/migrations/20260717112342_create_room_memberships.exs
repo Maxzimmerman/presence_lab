@@ -1,4 +1,4 @@
-defmodule PresenceLab.Repo.Migrations.CreateRoomMemeberships do
+defmodule PresenceLab.Repo.Migrations.CreateRoomMemberships do
   use Ecto.Migration
 
   def change do
