@@ -31,6 +31,10 @@
     </script>
   </head>
   <body>
+    <%= if assigns[:user] do %>
+      {assigns[:user].username}
+    <% end %>
+
     {@inner_content}
   </body>
 </html>

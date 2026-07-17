@@ -34,7 +34,6 @@ defmodule PresenceLabWeb.AuthLive do
 
   def render(assigns) do
     ~H"""
-    HELLO
     <.form for={@form} phx-change="validate" phx-submit="register">
       <.input type="text" field={@form[:username]} />
       <.input type="password" field={@form[:password]} />
