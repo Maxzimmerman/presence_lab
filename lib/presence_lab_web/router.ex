@@ -19,6 +19,7 @@ defmodule PresenceLabWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/rooms", RoomsLive
   end
 
   scope "/auth", PresenceLabWeb do
