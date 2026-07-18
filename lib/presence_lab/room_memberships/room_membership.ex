@@ -1,4 +1,4 @@
-defmodule PresenceLab.RoomMemeberships.RoomMembership do
+defmodule PresenceLab.RoomMemberships.RoomMembership do
   use Ecto.Schema
   import Ecto.Changeset
 
