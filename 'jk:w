@@ -1,0 +1,12 @@
+defmodule PresenceLab.RoomMemberships do
+  alias PresenceLab.Repo
+  alias PresenceLab.RoomMemeberships.RoomMembership
+  alias PresenceLab.Room
+  alias Users.User
+
+  def join(%Room{id: room_id}, %User{id: user_id}) do
+    %Room{}
+    |> Room.changeset(%{room_id: room_id, user_id: user_id})
+    |> Repo.sf()
+  end
+end
